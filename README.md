@@ -1,4 +1,4 @@
-# SMS-MirrorMode
+# SMS Mirror Mode
 Mirror mode in Super Mario Sunshine as powered by Better Sunshine Engine!
 
 Mirror Mode ON

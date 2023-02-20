@@ -16,6 +16,7 @@
 #include <BetterSMS/settings.hxx>
 
 #include "settings.hxx"
+#include "mirror.hxx"
 
 /*
 / Example module that logs to the console and draws to the screen during gameplay
@@ -436,6 +437,7 @@ static void initModule() {
         saveInfo.mIconTable   = reinterpret_cast<const ResTIMG *>(sSaveIcon);
         saveInfo.mSaveGlobal  = true;
     }
+
     BetterSMS::registerModule(&sModuleInfo);
 }
 
@@ -444,7 +446,11 @@ static void deinitModule() { BetterSMS::deregisterModule(&sModuleInfo); }
 // Definition block
 KURIBO_MODULE_BEGIN("Mirror Mode", "JoshuaMK", "v1.0") {
     // Set the load and unload callbacks to our registration functions
-    KURIBO_EXECUTE_ON_LOAD { initModule(); }
+    KURIBO_EXECUTE_ON_LOAD {
+        initModule();
+        
+        KURIBO_EXPORT_AS(static_cast<void (*)(bool)>(MirrorModeActive), "MirrorModeActive__Fb");
+    }
     KURIBO_EXECUTE_ON_UNLOAD { deinitModule(); }
 }
 KURIBO_MODULE_END()

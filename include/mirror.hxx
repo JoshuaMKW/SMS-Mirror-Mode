@@ -2,5 +2,5 @@
 
 #include <BetterSMS/module.hxx>
 
-void MirrorModeActive(bool active);
-bool MirrorModeActive();
+void SetMirrorModeActive(bool active);
+bool GetMirrorModeActive();

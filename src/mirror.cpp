@@ -20,7 +20,7 @@
 
 static bool sIsMirrorModeActive = false;
 
-BETTER_SMS_FOR_EXPORT void MirrorModeActive(bool active) {
+BETTER_SMS_FOR_EXPORT void SetMirrorModeActive(bool active) {
     sIsMirrorModeActive = active;
     
     // clang-format off
@@ -99,10 +99,10 @@ BETTER_SMS_FOR_EXPORT void MirrorModeActive(bool active) {
     }
     //clang-format on
 }
-BETTER_SMS_FOR_EXPORT bool MirrorModeActive() { return sIsMirrorModeActive; }
+BETTER_SMS_FOR_EXPORT bool GetMirrorModeActive() { return sIsMirrorModeActive; }
 
 void applyPatches(void *prev, void *cur, Settings::SingleSetting::ValueKind kind) {
-    MirrorModeActive(*reinterpret_cast<bool *>(cur));
+    SetMirrorModeActive(*reinterpret_cast<bool *>(cur));
 }
 
 #if 1
@@ -113,14 +113,14 @@ static float _xyz[3] = {-1.0, 1.0, 1.0};
 #endif
 
 static void mirrorMode(Mtx mtx, u32 perspective) {
-    if (MirrorModeActive())
+    if (GetMirrorModeActive())
         PSMTXScaleApply(mtx, mtx, INV_SCALE);
     GXSetProjection(mtx, perspective);
 }
 SMS_PATCH_BL(SMS_PORT_REGION(0x800233a4, 0, 0, 0), mirrorMode);
 
 static void mirrorMtxLoadBathwater(Mtx mtx, u32 mtxidx) {
-    if (MirrorModeActive())
+    if (GetMirrorModeActive())
         PSMTXScaleApply(mtx, mtx, INV_SCALE);
     GXLoadPosMtxImm(mtx, mtxidx);
 }
@@ -134,7 +134,7 @@ static SMS_ASM_FUNC void _selfMtx() {
 }
 
 static void mirrorCameraMtxBathwater() {
-    if (MirrorModeActive())
+    if (GetMirrorModeActive())
         PSMTXScaleApply(gpCamera->mMatrixTRS, sBathWaterMtx, INV_SCALE);
     else
         PSMTXCopy(gpCamera->mMatrixTRS, sBathWaterMtx);
@@ -146,7 +146,7 @@ static u32 mirrorCulling(void *factory, u32 mode) {
     u32 cullMode = newCullMode__18J3DMaterialFactoryCFi(factory, mode);
 
     TMarDirector *director = gpMarDirector;
-    if (!director || !MirrorModeActive())
+    if (!director || !GetMirrorModeActive())
         return cullMode;
 
     if (cullMode == GX_CULL_FRONT) {
@@ -162,7 +162,7 @@ static u32 mirrorCulling_v21(void *factory, u32 mode) {
     u32 cullMode = newCullMode__22J3DMaterialFactory_v21CFi(factory, mode);
 
     TMarDirector *director = gpMarDirector;
-    if (!director || !MirrorModeActive())
+    if (!director || !GetMirrorModeActive())
         return cullMode;
 
     if (cullMode == GX_CULL_FRONT) {
@@ -194,14 +194,14 @@ SMS_PATCH_BL(SMS_PORT_REGION(0x8031e7c8, 0, 0, 0), mirrorCulling_v21);
 
 static Mtx *getLightPerspectiveForEffectMtx(Mtx *dst, f32 x, f32 y, f32 n, f32 f) {
     C_MTXPerspective(*dst, x, y, n, f);
-    if (MirrorModeActive())
+    if (GetMirrorModeActive())
         PSMTXScaleApply(*dst, *dst, INV_SCALE);
     return dst;
 }
 SMS_PATCH_BL(SMS_PORT_REGION(0x8022ba9c, 0, 0, 0), getLightPerspectiveForEffectMtx);
 
 static Mtx *invertReflections(Mtx srcA, Mtx srcB, Mtx *dst) {
-    if (MirrorModeActive())
+    if (GetMirrorModeActive())
         PSMTXScaleApply(srcB, srcB, INV_SCALE);
     PSMTXConcat(srcA, srcB, *dst);
     return dst;
@@ -216,7 +216,7 @@ static Mtx *invertDropletReflections(Mtx *dst, f32 fovy, f32 aspect, f32 scaleS,
     Mtx invMtx;
     C_MTXLightPerspective(*dst, fovy, aspect, scaleS, scaleT, transS, transT);
 
-    if (MirrorModeActive()) {
+    if (GetMirrorModeActive()) {
         PSMTXScale(invMtx, INV_SCALE);
         PSMTXConcat(*dst, invMtx, *dst);
     }
@@ -229,7 +229,7 @@ static void invertMarioControl(JUTGamePad *controller) {
     controller->update();
 
     TMarDirector *director = gpMarDirector;
-    if (!director || director->mCurState == 0xA || !MirrorModeActive())
+    if (!director || director->mCurState == 0xA || !GetMirrorModeActive())
         return;
 
     JUTGamePad::CStick &ctrlStick = controller->mControlStick;

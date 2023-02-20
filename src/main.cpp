@@ -449,7 +449,8 @@ KURIBO_MODULE_BEGIN("Mirror Mode", "JoshuaMK", "v1.0") {
     KURIBO_EXECUTE_ON_LOAD {
         initModule();
         
-        KURIBO_EXPORT_AS(static_cast<void (*)(bool)>(MirrorModeActive), "MirrorModeActive__Fb");
+        KURIBO_EXPORT_AS(SetMirrorModeActive, "SetMirrorModeActive__Fb");
+        KURIBO_EXPORT_AS(GetMirrorModeActive, "GetMirrorModeActive__Fv");
     }
     KURIBO_EXECUTE_ON_UNLOAD { deinitModule(); }
 }

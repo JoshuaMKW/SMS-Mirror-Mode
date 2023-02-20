@@ -10,6 +10,7 @@
 #include <SMS/macros.h>
 
 #include <BetterSMS/module.hxx>
+#include <BetterSMS/memory.hxx>
 
 #include "settings.hxx"
 
@@ -17,12 +18,91 @@
 //    Created by JoshuaMK 2022   //
 // ----------------------------- //
 
-static VirtualMirrorSetting sVirtualMirrorActiveSetting;
+static bool sIsMirrorModeActive = false;
 
-bool isMirrorModeActive() { return sVirtualMirrorActiveSetting.getBool(); }
+BETTER_SMS_FOR_EXPORT void MirrorModeActive(bool active) {
+    sIsMirrorModeActive = active;
+    
+    // clang-format off
+    if (active) {
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x800DF008, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x800DF04C, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8010FFF8, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x80110064, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x80199324, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801A01F8, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801AD534, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801AE6B0, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801D9340, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801DA778, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801AE6B0, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801F3814, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801F4334, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022D294, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022D700, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F294, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F314, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F368, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F710, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F740, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F7C0, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F8F0, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x80244288, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027CA80, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027CAA8, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D5A4, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D5CC, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D660, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D688, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D72C, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D824, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D8F8, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027DC08, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027DE80, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027DFBC, 0, 0, 0)), 0x38600002);
+    } else {
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x800DF008, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x800DF04C, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8010FFF8, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x80110064, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x80199324, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801A01F8, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801AD534, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801AE6B0, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801D9340, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801DA778, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801AE6B0, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801F3814, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x801F4334, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022D294, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022D700, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F294, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F314, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F368, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F710, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F740, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F7C0, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8022F8F0, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x80244288, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027CA80, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027CAA8, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D5A4, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D5CC, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D660, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D688, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D72C, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D824, 0, 0, 0)), 0x38600001);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027D8F8, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027DC08, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027DE80, 0, 0, 0)), 0x38600002);
+        PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x8027DFBC, 0, 0, 0)), 0x38600001);
+    }
+    //clang-format on
+}
+BETTER_SMS_FOR_EXPORT bool MirrorModeActive() { return sIsMirrorModeActive; }
 
-void syncSettings(void *old, void *cur, Settings::SingleSetting::ValueKind kind) {
-    sVirtualMirrorActiveSetting.setBool(*reinterpret_cast<bool *>(cur));
+void applyPatches(void *prev, void *cur, Settings::SingleSetting::ValueKind kind) {
+    MirrorModeActive(*reinterpret_cast<bool *>(cur));
 }
 
 #if 1
@@ -33,14 +113,14 @@ static float _xyz[3] = {-1.0, 1.0, 1.0};
 #endif
 
 static void mirrorMode(Mtx mtx, u32 perspective) {
-    if (isMirrorModeActive())
+    if (MirrorModeActive())
         PSMTXScaleApply(mtx, mtx, INV_SCALE);
     GXSetProjection(mtx, perspective);
 }
 SMS_PATCH_BL(SMS_PORT_REGION(0x800233a4, 0, 0, 0), mirrorMode);
 
 static void mirrorMtxLoadBathwater(Mtx mtx, u32 mtxidx) {
-    if (isMirrorModeActive())
+    if (MirrorModeActive())
         PSMTXScaleApply(mtx, mtx, INV_SCALE);
     GXLoadPosMtxImm(mtx, mtxidx);
 }
@@ -54,7 +134,7 @@ static SMS_ASM_FUNC void _selfMtx() {
 }
 
 static void mirrorCameraMtxBathwater() {
-    if (isMirrorModeActive())
+    if (MirrorModeActive())
         PSMTXScaleApply(gpCamera->mMatrixTRS, sBathWaterMtx, INV_SCALE);
     else
         PSMTXCopy(gpCamera->mMatrixTRS, sBathWaterMtx);
@@ -66,7 +146,7 @@ static u32 mirrorCulling(void *factory, u32 mode) {
     u32 cullMode = newCullMode__18J3DMaterialFactoryCFi(factory, mode);
 
     TMarDirector *director = gpMarDirector;
-    if (!director || !isMirrorModeActive())
+    if (!director || !MirrorModeActive())
         return cullMode;
 
     if (cullMode == GX_CULL_FRONT) {
@@ -82,7 +162,7 @@ static u32 mirrorCulling_v21(void *factory, u32 mode) {
     u32 cullMode = newCullMode__22J3DMaterialFactory_v21CFi(factory, mode);
 
     TMarDirector *director = gpMarDirector;
-    if (!director || !isMirrorModeActive())
+    if (!director || !MirrorModeActive())
         return cullMode;
 
     if (cullMode == GX_CULL_FRONT) {
@@ -114,14 +194,14 @@ SMS_PATCH_BL(SMS_PORT_REGION(0x8031e7c8, 0, 0, 0), mirrorCulling_v21);
 
 static Mtx *getLightPerspectiveForEffectMtx(Mtx *dst, f32 x, f32 y, f32 n, f32 f) {
     C_MTXPerspective(*dst, x, y, n, f);
-    if (isMirrorModeActive())
+    if (MirrorModeActive())
         PSMTXScaleApply(*dst, *dst, INV_SCALE);
     return dst;
 }
 SMS_PATCH_BL(SMS_PORT_REGION(0x8022ba9c, 0, 0, 0), getLightPerspectiveForEffectMtx);
 
 static Mtx *invertReflections(Mtx srcA, Mtx srcB, Mtx *dst) {
-    if (isMirrorModeActive())
+    if (MirrorModeActive())
         PSMTXScaleApply(srcB, srcB, INV_SCALE);
     PSMTXConcat(srcA, srcB, *dst);
     return dst;
@@ -136,7 +216,7 @@ static Mtx *invertDropletReflections(Mtx *dst, f32 fovy, f32 aspect, f32 scaleS,
     Mtx invMtx;
     C_MTXLightPerspective(*dst, fovy, aspect, scaleS, scaleT, transS, transT);
 
-    if (isMirrorModeActive()) {
+    if (MirrorModeActive()) {
         PSMTXScale(invMtx, INV_SCALE);
         PSMTXConcat(*dst, invMtx, *dst);
     }
@@ -149,7 +229,7 @@ static void invertMarioControl(JUTGamePad *controller) {
     controller->update();
 
     TMarDirector *director = gpMarDirector;
-    if (!director || director->mCurState == 0xA || !isMirrorModeActive())
+    if (!director || director->mCurState == 0xA || !MirrorModeActive())
         return;
 
     JUTGamePad::CStick &ctrlStick = controller->mControlStick;

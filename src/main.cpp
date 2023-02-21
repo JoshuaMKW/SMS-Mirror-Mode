@@ -425,7 +425,7 @@ static void initModule() {
     sSettingsGroup.addSetting(&sMirrorActiveSetting);
     {
         auto &saveInfo        = sSettingsGroup.getSaveInfo();
-        saveInfo.mSaveName    = Settings::getGroupName(sSettingsGroup);
+        saveInfo.mSaveName    = "Sunshine Mirror Mode";
         saveInfo.mBlocks      = 1;
         saveInfo.mGameCode    = 'GMSM';
         saveInfo.mCompany     = 0x3031;  // '01'

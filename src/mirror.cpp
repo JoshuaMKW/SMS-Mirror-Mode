@@ -225,6 +225,10 @@ static Mtx *invertDropletReflections(Mtx *dst, f32 fovy, f32 aspect, f32 scaleS,
 }
 SMS_PATCH_BL(SMS_PORT_REGION(0x8027c1f0, 0, 0, 0), invertDropletReflections);
 
+inline s8 floatToS8(float value) {
+    return (s8)(((value / 2.0f) + 0.5f) * 255.0f) - 128;
+}
+
 static void invertMarioControl(JUTGamePad *controller) {
     controller->update();
 
@@ -234,15 +238,14 @@ static void invertMarioControl(JUTGamePad *controller) {
 
     JUTGamePad::CStick &ctrlStick = controller->mControlStick;
     JUTGamePad::CStick &cStick    = controller->mCStick;
+
     ctrlStick.update(
-        -SMS_PORT_REGION(*(s8 *)0x80404456, *(s8 *)0x80404456, *(s8 *)0x80404456,
-                         *(s8 *)0x80404456),
-        SMS_PORT_REGION(*(s8 *)0x80404457, *(s8 *)0x80404457, *(s8 *)0x80404457, *(s8 *)0x80404457),
+        255 - floatToS8(ctrlStick.mStickX),
+        floatToS8(ctrlStick.mStickY),
         JUTGamePad::Clamped, JUTGamePad::WhichStick_ControlStick);
     cStick.update(
-        -SMS_PORT_REGION(*(s8 *)0x80404458, *(s8 *)0x80404458, *(s8 *)0x80404458,
-                         *(s8 *)0x80404458),
-        SMS_PORT_REGION(*(s8 *)0x80404459, *(s8 *)0x80404459, *(s8 *)0x80404459, *(s8 *)0x80404459),
+        255 - floatToS8(cStick.mStickX),
+        floatToS8(cStick.mStickY),
         JUTGamePad::Clamped, JUTGamePad::WhichStick_CStick);
 }
 SMS_PATCH_BL(SMS_PORT_REGION(0x802c8e54, 0, 0, 0), invertMarioControl);

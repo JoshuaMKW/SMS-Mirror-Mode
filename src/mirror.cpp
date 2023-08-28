@@ -3,14 +3,14 @@
 #include <Dolphin/MTX.h>
 
 #include <SMS/Camera/PolarSubCamera.hxx>
+#include <SMS/GC2D/SelectShine.hxx>
 #include <SMS/Player/Mario.hxx>
 #include <SMS/Player/Yoshi.hxx>
-#include <SMS/GC2D/SelectShine.hxx>
-#include <SMS/raw_fn.hxx>
 #include <SMS/macros.h>
+#include <SMS/raw_fn.hxx>
 
-#include <BetterSMS/module.hxx>
 #include <BetterSMS/memory.hxx>
+#include <BetterSMS/module.hxx>
 
 #include "settings.hxx"
 
@@ -22,7 +22,7 @@ static bool sIsMirrorModeActive = false;
 
 BETTER_SMS_FOR_EXPORT void SetMirrorModeActive(bool active) {
     sIsMirrorModeActive = active;
-    
+
     // clang-format off
     if (active) {
         PowerPC::writeU32(reinterpret_cast<u32 *>(SMS_PORT_REGION(0x800DF008, 0, 0, 0)), 0x38600001);
@@ -135,9 +135,9 @@ static SMS_ASM_FUNC void _selfMtx() {
 
 static void mirrorCameraMtxBathwater() {
     if (GetMirrorModeActive())
-        PSMTXScaleApply(gpCamera->mMatrixTRS, sBathWaterMtx, INV_SCALE);
+        PSMTXScaleApply(gpCamera->mTRSMatrix, sBathWaterMtx, INV_SCALE);
     else
-        PSMTXCopy(gpCamera->mMatrixTRS, sBathWaterMtx);
+        PSMTXCopy(gpCamera->mTRSMatrix, sBathWaterMtx);
     _selfMtx();
 }
 SMS_PATCH_BL(SMS_PORT_REGION(0x801AC96C, 0, 0, 0), mirrorCameraMtxBathwater);

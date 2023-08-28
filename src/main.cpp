@@ -1,8 +1,8 @@
-#include <Dolphin/types.h>
 #include <Dolphin/CARD.h>
-#include <Dolphin/math.h>
 #include <Dolphin/OS.h>
+#include <Dolphin/math.h>
 #include <Dolphin/string.h>
+#include <Dolphin/types.h>
 
 #include <JSystem/J2D/J2DOrthoGraph.hxx>
 #include <JSystem/J2D/J2DTextBox.hxx>
@@ -10,13 +10,13 @@
 #include <SMS/System/Application.hxx>
 
 #include <BetterSMS/game.hxx>
-#include <BetterSMS/module.hxx>
-#include <BetterSMS/stage.hxx>
 #include <BetterSMS/loading.hxx>
+#include <BetterSMS/module.hxx>
 #include <BetterSMS/settings.hxx>
+#include <BetterSMS/stage.hxx>
 
-#include "settings.hxx"
 #include "mirror.hxx"
+#include "settings.hxx"
 
 /*
 / Example module that logs to the console and draws to the screen during gameplay
@@ -448,7 +448,7 @@ KURIBO_MODULE_BEGIN("Mirror Mode", "JoshuaMK", "v1.0") {
     // Set the load and unload callbacks to our registration functions
     KURIBO_EXECUTE_ON_LOAD {
         initModule();
-        
+
         KURIBO_EXPORT_AS(SetMirrorModeActive, "SetMirrorModeActive__Fb");
         KURIBO_EXPORT_AS(GetMirrorModeActive, "GetMirrorModeActive__Fv");
     }

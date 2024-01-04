@@ -438,10 +438,8 @@ static void initModule() {
         saveInfo.mSaveGlobal  = true;
     }
 
-    BetterSMS::registerModule(&sModuleInfo);
+    BetterSMS::registerModule(sModuleInfo);
 }
-
-static void deinitModule() { BetterSMS::deregisterModule(&sModuleInfo); }
 
 // Definition block
 KURIBO_MODULE_BEGIN("Mirror Mode", "JoshuaMK", "v1.0") {
@@ -452,6 +450,5 @@ KURIBO_MODULE_BEGIN("Mirror Mode", "JoshuaMK", "v1.0") {
         KURIBO_EXPORT_AS(SetMirrorModeActive, "SetMirrorModeActive__Fb");
         KURIBO_EXPORT_AS(GetMirrorModeActive, "GetMirrorModeActive__Fv");
     }
-    KURIBO_EXECUTE_ON_UNLOAD { deinitModule(); }
 }
 KURIBO_MODULE_END()

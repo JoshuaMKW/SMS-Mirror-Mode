@@ -225,7 +225,10 @@ static Mtx *invertDropletReflections(Mtx *dst, f32 fovy, f32 aspect, f32 scaleS,
 }
 SMS_PATCH_BL(SMS_PORT_REGION(0x8027c1f0, 0, 0, 0), invertDropletReflections);
 
-inline s8 floatToS8(float value) {
+inline s8 floatToS8(f32 value) {
+    if (value == 0) {
+        return 0;
+    }
     return (s8)(((value / 2.0f) + 0.5f) * 255.0f) - 128;
 }
 
@@ -233,18 +236,18 @@ static void invertMarioControl(JUTGamePad *controller) {
     controller->update();
 
     TMarDirector *director = gpMarDirector;
-    if (!director || director->mCurState == 0xA || !GetMirrorModeActive())
+    if (!director || director->mCurState == TMarDirector::STATE_FREEZE || !GetMirrorModeActive())
         return;
 
     JUTGamePad::CStick &ctrlStick = controller->mControlStick;
     JUTGamePad::CStick &cStick    = controller->mCStick;
 
     ctrlStick.update(
-        255 - floatToS8(ctrlStick.mStickX),
+        floatToS8(-ctrlStick.mStickX),
         floatToS8(ctrlStick.mStickY),
         JUTGamePad::Clamped, JUTGamePad::WhichStick_ControlStick);
     cStick.update(
-        255 - floatToS8(cStick.mStickX),
+        floatToS8(-cStick.mStickX),
         floatToS8(cStick.mStickY),
         JUTGamePad::Clamped, JUTGamePad::WhichStick_CStick);
 }
